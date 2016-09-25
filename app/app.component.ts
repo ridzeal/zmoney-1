@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Account } from './account'
 
+import { AccountService } from './account.service';
+
 @Component({
   selector: 'my-app',
+  providers: [AccountService],
   template: `
     <h1>{{title}}</h1>
 
@@ -68,18 +71,23 @@ import { Account } from './account'
       }
     `]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'zMoney';
-  accounts = ACCOUNTS;
+  accounts: Account[];
   selectedAccount: Account;
   onSelect(account: Account): void {
     this.selectedAccount = account;
   }
-}
 
-const ACCOUNTS: Account[] = [
-  { id: 1, name: 'Personal' },
-  { id: 2, name: 'Bank 1' },
-  { id: 3, name: 'Bank 2' },
-  { id: 4, name: 'Deposit Investment' }
-];
+  getAccounts(): void {
+    this.accountService.getAccounts().then(accounts => this.accounts = accounts);
+  }
+
+  constructor(private accountService: AccountService) {
+
+  }
+
+  ngOnInit(): void {
+    this.getAccounts();
+  }
+}
