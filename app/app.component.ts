@@ -1,17 +1,11 @@
 import { Component } from '@angular/core';
 
+import { Account } from './account'
+
 @Component({
   selector: 'my-app',
   template: `
     <h1>{{title}}</h1>
-    <div *ngIf="selectedAccount">
-      <h2>{{selectedAccount.name}} Account</h2>
-      <div><label>id: </label>{{selectedAccount.id}}</div>
-      <div>
-        <label>name: </label>
-        <input [(ngModel)]="selectedAccount.name" placeholder="name">
-      </div>
-    </div>
 
     <h2>My Accounts</h2>
     <ul class="accounts">
@@ -21,6 +15,8 @@ import { Component } from '@angular/core';
         <span class="badge">{{account.id}}</span> {{account.name}}
       </li>
     </ul>
+
+    <account-detail [account]="selectedAccount"></account-detail>
     `,
     styles: [`
       .selected {
@@ -79,11 +75,6 @@ export class AppComponent {
   onSelect(account: Account): void {
     this.selectedAccount = account;
   }
-}
-
-export class Account {
-  id: number;
-  name: string;
 }
 
 const ACCOUNTS: Account[] = [
